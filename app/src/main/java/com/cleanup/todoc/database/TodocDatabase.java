@@ -40,6 +40,17 @@ public abstract class TodocDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    public static TodocDatabase getMemoryInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = Room.inMemoryDatabaseBuilder(context.getApplicationContext(),
+                            TodocDatabase.class)
+                    .addCallback(prepopulateDatabase())
+                    .build();
+        }
+
+        return INSTANCE;
+    }
+
     private static Callback prepopulateDatabase() {
         return new Callback() {
             @Override

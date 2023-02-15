@@ -1,26 +1,29 @@
 package com.cleanup.todoc;
 
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.RecyclerView;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import android.view.View;
 import android.widget.TextView;
 
+import com.cleanup.todoc.injection.Di;
 import com.cleanup.todoc.ui.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.cleanup.todoc.TestUtils.withRecyclerView;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -30,8 +33,9 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
+
     @Rule
-    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+    public MemoryDBActivityRule rule = new MemoryDBActivityRule(MainActivity.class);
 
     @Test
     public void addAndRemoveTask() {
@@ -118,5 +122,17 @@ public class MainActivityInstrumentedTest {
                 .check(matches(withText("zzz Tâche example")));
         onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_task_name))
                 .check(matches(withText("aaa Tâche example")));
+    }
+
+    class MemoryDBActivityRule extends ActivityTestRule<MainActivity> {
+        public MemoryDBActivityRule(Class<MainActivity> activityClass) {
+            super(activityClass);
+        }
+
+        @Override
+        protected void beforeActivityLaunched() {
+            Di.isForTesting = true;
+            super.beforeActivityLaunched();
+        }
     }
 }

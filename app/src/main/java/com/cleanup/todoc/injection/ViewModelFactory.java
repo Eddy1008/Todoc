@@ -34,9 +34,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private ViewModelFactory(Context context) {
-        TodocDatabase database = TodocDatabase.getInstance(context);
-        this.projectDataSource = new ProjectDataRepository(database.projectDao());
-        this.taskDataSource = new TaskDataRepository(database.taskDao());
+        this.projectDataSource = Di.getProjectRepository(context);
+        this.taskDataSource = Di.getTaskRepository(context);
         this.executor = Executors.newSingleThreadExecutor();
     }
 
