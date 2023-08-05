@@ -167,15 +167,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         return super.onOptionsItemSelected(item);
     }
 
-    // TODO utiliser le ViewModel pour supprimer une task
     /**
      * @param task the task that needs to be deleted
      */
     @Override
     public void onDeleteTask(Task task) {
         taskViewModel.deleteTask(task.getId());
-        //allTasks.remove(task);
-        //updateTasks();
     }
 
     /**
@@ -237,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         populateDialogSpinner();
     }
 
-    // TODO utiliser le ViewModel pour Ajouter une tache:
     /**
      * Adds the given task to the list of created tasks.
      *
@@ -245,8 +241,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void addTask(@NonNull Task task) {
         taskViewModel.createTask(task);
-        //allTasks.add(task);
-        //updateTasks();
     }
 
     /**
